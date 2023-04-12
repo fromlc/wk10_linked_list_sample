@@ -124,10 +124,8 @@ int main() {
 	int lucky = DisplayWinningNumber();
 	ListItem* pItem = FindWinner(lucky);
 
-	// display the results
-	int retcode = DisplayResults(pItem, lucky);
-
-	return retcode;
+	// report status to OS after displaying the results
+	return DisplayResults(pItem, lucky);
 }
 
 //------------------------------------------------------------------------------
@@ -135,7 +133,7 @@ int main() {
 //------------------------------------------------------------------------------
 void CreateList(int max) {
 
-	cout << "\nEnter names for " << max << " players.\n";
+	cout << "\n Enter names for " << max << " players.\n";
 
 	for (int i = 0; i < max; i++) 	{
 
@@ -149,15 +147,7 @@ void CreateList(int max) {
 //------------------------------------------------------------------------------
 ListItem* PrepareItem(int numItem) {
 
-	ListItem* pItem;
-
-	try {
-		pItem = new(ListItem);
-	}
-	catch (const bad_alloc& e) {
-		cout << "ListItem allocation failed: " << e.what() << '\n';
-		exit(ERR_BAD_ALLOC);
-	}
+	ListItem* pItem = new(ListItem);
 
 	// fill the newly allocated ListItem with data
 	FillItem(pItem, numItem);
@@ -170,9 +160,8 @@ ListItem* PrepareItem(int numItem) {
 //------------------------------------------------------------------------------
 void FillItem(ListItem* pItem, int numItem) {
 
-	// get a name from user
-	cout << "\nName for player " << numItem << ": ";
-	// #TODO validate name
+	// get a player name from user
+	cout << "\n\tPlayer " << numItem << " name: ";
 	cin >> pItem->name;
 
 	// generate a number between 1 and MAX_LUCKY for this name
@@ -195,7 +184,7 @@ void AddItem(ListItem* pItem) {
 int DisplayWinningNumber() {
 
 	int winner = rand() % MAX_LUCKY + 1;
-	cout << "\nThe winning number is " << winner << "!\n";
+	cout << "\n The winning number is " << winner << "!\n";
 
 	return winner;
 }
@@ -212,7 +201,7 @@ ListItem* FindWinner(int lucky) {
 	while (pItem != nullptr) {
 
 		// display each item's info
-		cout << '\n' << pItem->name << " has lucky number " << pItem->lucky << std::endl;
+		cout << "\n\t" << pItem->name << " has lucky number " << pItem->lucky << std::endl;
 
 		// check list item for winning lucky number
 		if (pItem->lucky == lucky)
@@ -236,13 +225,13 @@ int DisplayResults(ListItem* pWinner, int lucky) {
 	if (pWinner == nullptr) {
 
 		// we need the passed lucky number for this
-		cout << "\nSorry, there's no winner for lucky number "
+		cout << " Sorry, there's no winner for lucky number "
 			<< lucky << '\n';
 
 		return ERR_NO_WINNER;
 	}
 
-	cout << "\nThe winner is " << pWinner->name << " with lucky number "
+	cout << "\n\tThe winner is " << pWinner->name << " with lucky number "
 		<< pWinner->lucky << '\n';
 	
 	return ERR_ALL_OK;
