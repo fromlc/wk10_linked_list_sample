@@ -93,8 +93,9 @@ int main()
 
 //------------------------------------------------------------------------------
 // -build the linked list, return pointer to list head
+// -updates reference parameter pTail
 //------------------------------------------------------------------------------
-Node* createList(Node*&pTail)
+Node* createList(Node*& pTail)
 {
     static std::string names[] = { "Joe", "Sally", "Gina", "Alec" };
 
