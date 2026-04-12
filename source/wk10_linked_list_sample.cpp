@@ -72,7 +72,7 @@ void displayResults(Node* pWinner);
 //------------------------------------------------------------------------------
 int main()
 {
-    // Always initialize 
+    // Always initialize pointers to 0
     Node* pHead = nullptr;
 
     // seed rand() with number of seconds elapsed since midnight on Jan 1, 1970
@@ -91,7 +91,7 @@ int main()
 }
 
 //------------------------------------------------------------------------------
-// build the linked list, return pointer to list head
+// -builds the linked list, return pointer to list head
 //------------------------------------------------------------------------------
 Node* createList()
 {
@@ -115,7 +115,8 @@ Node* createList()
 }
 
 //------------------------------------------------------------------------------
-// make pasesed Node the new list head (first Node in the list)
+// -create a new Node and make it the new list head (first Node in the list)
+// -returns pointer to the new list head
 //------------------------------------------------------------------------------
 Node* addNode(Node* pHead)
 {
