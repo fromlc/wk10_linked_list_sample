@@ -34,7 +34,7 @@
 // we generate a random "lucky number" not guaranteed to be unique.
 // 
 // We dynamically allocate memory for a Node struct for each name and 
-// lucky number, then we add it to the head of the list.
+// lucky number, then we add it to the tail of the list.
 // 
 // Then we generate a "winning lucky number" and display the winning name,
 // or display that nobody won.
@@ -62,7 +62,7 @@ struct Node
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
-Node* createList();
+Node* createList(Node*& pTail);
 Node* addNode(Node* pHead);
 Node* findWinner(Node* pHead, int winner);
 void displayResults(Node* pWinner);
@@ -72,16 +72,17 @@ void displayResults(Node* pWinner);
 //------------------------------------------------------------------------------
 int main()
 {
-    // Always initialize 
+    // Always initialize pointers to 0
     Node* pHead = nullptr;
+    Node* pTail = nullptr;
 
-    // seed rand() with number of seconds elapsed since midnight on Jan 1, 1970
+    // Seed rand() with number of seconds elapsed since midnight on Jan 1, 1970
     srand(static_cast<unsigned int>(time(0)));
 
     // Create all list nodes from the static array in createList()
-    pHead = createList();
+    pHead = createList(pTail);
 
-    // generate the winning number and find the winner, if any
+    // Generate the winning number and find the winner, if any
     int winner = rand() % DIE_SIDES + 1;
     std::cout << "\nThe winning number is " << winner << "!\n\n";
 
@@ -93,35 +94,43 @@ int main()
 //------------------------------------------------------------------------------
 // build the linked list, return pointer to list head
 //------------------------------------------------------------------------------
-Node* createList()
+Node* createList(Node*&pTail)
 {
     static std::string names[] = { "Joe", "Sally", "Gina", "Alec" };
 
+    // list initially has one Node that is both head and tail
     Node* pHead = nullptr;
 
     int nPlayers = sizeof(names) / sizeof(std::string);
+
     for (int i = 0; i < nPlayers; i++)
     {
-        pHead = addNode(pHead);
+        pTail = addNode(pTail);
+        if (i == 0)
+            pHead = pTail;
 
         // set player name and display it
-        pHead->player = names[i];
+        pTail->player = names[i];
 
         // generate player's lucky number
-        pHead->lucky = rand() % DIE_SIDES + 1;
+        pTail->lucky = rand() % DIE_SIDES + 1;
     }
 
     return pHead;
 }
 
 //------------------------------------------------------------------------------
-// make pasesed Node the new list head (first Node in the list)
+// -creates a new Node and makes it the new list tail (last Node in the list)
 //------------------------------------------------------------------------------
-Node* addNode(Node* pHead)
+Node* addNode(Node* pTail)
 {
+    Node* p = pTail;            // use pList to traverse list
     Node* pNode = new Node;
 
-    pNode->pNext = pHead;
+    // if the list is empty, the new Node becomes the new head and tail
+    if (pTail != nullptr)
+        pTail->pNext = pNode;
+
     return pNode;
 }
 
