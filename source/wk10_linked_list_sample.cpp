@@ -92,19 +92,19 @@ int main()
 }
 
 //------------------------------------------------------------------------------
-// build the linked list, return pointer to list head
+// -build the linked list, return pointer to list head
 //------------------------------------------------------------------------------
 Node* createList(Node*&pTail)
 {
     static std::string names[] = { "Joe", "Sally", "Gina", "Alec" };
 
-    // list initially has one Node that is both head and tail
     Node* pHead = nullptr;
 
     int nPlayers = sizeof(names) / sizeof(std::string);
 
     for (int i = 0; i < nPlayers; i++)
     {
+       // first Node added is both head and tail
         pTail = addNode(pTail);
         if (i == 0)
             pHead = pTail;
