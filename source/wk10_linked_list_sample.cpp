@@ -62,8 +62,8 @@ struct Node
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
-Node* createList(Node*& pTail);
-Node* addNode(Node* pHead);
+Node* const createList();
+Node* addNode(Node*& pHead);
 Node* findWinner(Node* pHead, int winner);
 void displayResults(Node* pWinner);
 
@@ -72,15 +72,11 @@ void displayResults(Node* pWinner);
 //------------------------------------------------------------------------------
 int main()
 {
-    // Always initialize pointers to 0
-    Node* pHead = nullptr;
-    Node* pTail = nullptr;
-
     // Seed rand() with number of seconds elapsed since midnight on Jan 1, 1970
     srand(static_cast<unsigned int>(time(0)));
 
     // Create all list nodes from the static array in createList()
-    pHead = createList(pTail);
+    Node* const pHead = createList();
 
     // Generate the winning number and find the winner, if any
     int winner = rand() % DIE_SIDES + 1;
@@ -92,44 +88,59 @@ int main()
 }
 
 //------------------------------------------------------------------------------
-// build the linked list, return pointer to list head
+// build the linked list, return const pointer to list head
 //------------------------------------------------------------------------------
-Node* createList(Node*&pTail)
+Node* const createList()
 {
     static std::string names[] = { "Joe", "Sally", "Gina", "Alec" };
 
     // list initially has one Node that is both head and tail
-    Node* pHead = nullptr;
+    Node* pList = nullptr;
+    Node* pNode = nullptr;
 
     int nPlayers = sizeof(names) / sizeof(std::string);
 
     for (int i = 0; i < nPlayers; i++)
     {
-        pTail = addNode(pTail);
-        if (i == 0)
-            pHead = pTail;
+        pNode = addNode(pList);
 
         // set player name and display it
-        pTail->player = names[i];
+        pNode->player = names[i];
 
         // generate player's lucky number
-        pTail->lucky = rand() % DIE_SIDES + 1;
+        pNode->lucky = rand() % DIE_SIDES + 1;
     }
 
-    return pHead;
+    return pList;
 }
 
 //------------------------------------------------------------------------------
 // -creates a new Node and makes it the new list tail (last Node in the list)
+// -if list is empty, sets reference param pHead
+// -returns pointer to new Node
 //------------------------------------------------------------------------------
-Node* addNode(Node* pTail)
+Node* addNode(Node*& pHead)
 {
-    Node* p = pTail;            // use pList to traverse list
-    Node* pNode = new Node;
-
     // if the list is empty, the new Node becomes the new head and tail
-    if (pTail != nullptr)
-        pTail->pNext = pNode;
+    if (pHead == nullptr)
+    {
+        pHead = new Node;
+        return pHead;
+    }
+
+    // use pList to traverse list, with p one Node behind
+    Node* pList = pHead;
+    Node* p = nullptr;
+
+    do
+    {
+        p = pList;
+        pList = pList->pNext;
+
+    } while (pList != nullptr);
+
+    Node* pNode = new Node;
+    p->pNext = pNode;
 
     return pNode;
 }
