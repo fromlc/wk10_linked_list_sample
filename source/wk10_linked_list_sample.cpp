@@ -36,7 +36,7 @@
 // We dynamically allocate memory for a Node struct for each name and 
 // lucky number, then we add it to the tail of the list.
 // 
-// Then we generate a "winning lucky number" and display the winning name,
+// Then we generate a "winning lucky number" and display the winner's name,
 // or display that nobody won.
 //------------------------------------------------------------------------------
 #include <iostream>		// cout, cin
@@ -84,7 +84,7 @@ int main()
 
     // Generate the winning number and find the winner, if any
     int winner = rand() % DIE_SIDES + 1;
-    std::cout << "\nThe winning number is " << winner << "!\n\n";
+    std::cout << "\nThe winning number is " << winner << ".\n\n";
 
     Node* pWinner = findWinner(pHead, winner);
 
