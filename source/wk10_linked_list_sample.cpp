@@ -36,7 +36,7 @@
 // We dynamically allocate memory for a Node struct for each name and 
 // lucky number, then we add it to the tail of the list.
 // 
-// Then we generate a "winning lucky number" and display the winning name,
+// Then we generate a "winning lucky number" and display the winner's name,
 // or display that nobody won.
 //------------------------------------------------------------------------------
 #include <iostream>		// cout, cin
@@ -66,6 +66,7 @@ Node* const createList();
 Node* addNode(Node*& pHead);
 Node* findWinner(Node* pHead, int winner);
 void displayResults(Node* pWinner);
+void releaseNodes(Node* pHead);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -80,11 +81,14 @@ int main()
 
     // Generate the winning number and find the winner, if any
     int winner = rand() % DIE_SIDES + 1;
-    std::cout << "\nThe winning number is " << winner << "!\n\n";
+    std::cout << "\nThe winning number is " << winner << ".\n\n";
 
     Node* pWinner = findWinner(pHead, winner);
 
     displayResults(pWinner);
+
+    // free linked list Node memory
+    releaseNodes(pHead);
 }
 
 //------------------------------------------------------------------------------
@@ -184,4 +188,20 @@ void displayResults(Node* pWinner)
 
     else
         std::cout << pWinner->player << " wins!\n";
+}
+
+//------------------------------------------------------------------------------
+// free linked list's allocated Node memory
+//------------------------------------------------------------------------------
+void releaseNodes(Node* pHead)
+{
+    Node*pDelete = pHead;
+
+    // delete each Node, but save its pNext pointer first!
+    while (pDelete != nullptr)
+    {
+        Node* p = pDelete->pNext;
+        delete pDelete;
+        pDelete = p;
+    }
 }
