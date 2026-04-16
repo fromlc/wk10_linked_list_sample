@@ -66,6 +66,7 @@ Node* createList(Node*& pTail);
 Node* addNode(Node* pHead);
 Node* findWinner(Node* pHead, int winner);
 void displayResults(Node* pWinner);
+void releaseNodes(Node*& pHead);
 
 //------------------------------------------------------------------------------
 // entry point
@@ -89,6 +90,9 @@ int main()
     Node* pWinner = findWinner(pHead, winner);
 
     displayResults(pWinner);
+
+    // free allocated Node memory
+    releaseNodes(pHead);
 }
 
 //------------------------------------------------------------------------------
@@ -175,3 +179,23 @@ void displayResults(Node* pWinner)
     else
         std::cout << pWinner->player << " wins!\n";
 }
+
+//------------------------------------------------------------------------------
+// free linked list's allocated Node memory
+//------------------------------------------------------------------------------
+void releaseNodes(Node*& pHead)
+{
+    Node*pDelete = pHead;
+
+    // delete each Node, but save its pNext pointer first!
+    while (pDelete != nullptr)
+    {
+        Node* p = pDelete->pNext;
+        delete pDelete;
+        pDelete = p;
+    }
+
+    // set pHead to 0 so the list remains valid
+    pHead = nullptr;
+}
+
