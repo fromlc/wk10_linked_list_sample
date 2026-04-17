@@ -111,7 +111,7 @@ Node* createList(Node*& pTail)
     {
        // first Node added is both head and tail
         pTail = addNode(pTail);
-        if (i == 0)
+        if (pHead == nullptr)
             pHead = pTail;
 
         // set player name and display it
