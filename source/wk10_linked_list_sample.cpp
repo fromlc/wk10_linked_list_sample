@@ -137,7 +137,6 @@ Node* findWinner(Node* pHead, int lucky)
 {
     // traverse the list and find the winner
     Node* pNode = pHead;
-    Node* pWinner = nullptr;
 
     while (pNode != nullptr)
     {
@@ -147,15 +146,19 @@ Node* findWinner(Node* pHead, int lucky)
 
         // check list item for lucky number
         if (pNode->lucky == lucky)
-            pWinner = pNode;
+        {
+            std::cout << '\n';
+            return pNode;
+        }
 
-        // go to the next list item
+    // go to the next list item
         pNode = pNode->pNext;
     }
 
     std::cout << '\n';
 
-    return pWinner;
+    // didn't find it
+    return nullptr;
 }
 
 //------------------------------------------------------------------------------
